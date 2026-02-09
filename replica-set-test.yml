@@ -1,0 +1,30 @@
+# Kubernetes ReplicaSet configuration - manages pod replicas
+apiVersion: apps/v1
+kind: ReplicaSet
+
+metadata:
+  name: myrs
+
+spec:
+  # Maintain 4 pod replicas
+  replicas: 4
+  
+  # Select pods with env label matching test or prod
+  selector:
+    matchExpressions:
+      - key: env
+        operator: In
+        values: ["test", "prod"]
+  
+  # Pod template for creating new replicas
+  template:
+    metadata:
+      labels:
+        key: test
+    
+    spec:
+      containers:
+        - name: mycontainer
+          image: nginx:latest
+          ports:
+            - containerPort: 80          
