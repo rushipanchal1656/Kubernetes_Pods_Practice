@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeployment
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      key: mypod
+  template:
+    metadata:
+      labels:
+        key: mypod
+    spec:
+      containers:
+        - name: mycontainer
+          image: nginx
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: myefsvolume
+              mountPath: /usr/share/nginx/html/
+      volumes:
+        - name: myefsvolume
+          nfs:
+            path: /data
+            server: <IP_ADDRESS/DNS_NAME>
+       
